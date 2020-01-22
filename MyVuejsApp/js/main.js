@@ -1,8 +1,6 @@
 (function() {
   'use strict';
 
-  // two way data binding (to UI)
-
   var vm = new Vue({
     el: '#app',
     data: {
@@ -17,6 +15,14 @@
         title: 'task 3',
         isDone: true
       }]
+    },
+    watch: {
+      todos: {
+        handler: function() {
+        localStorage.setItem('todos', JSON.stringify(this.todos));
+        },
+        deep: true
+      }
     },
     methods: {
       addItem: function() {
@@ -36,18 +42,11 @@
         if (!confirm('delete finished?')) {
           return;
         }
-        // this.todos = this.todos.filter(function(todo) {
-        //   return !todo.isDone;
-        // });
         this.todos = this.remaining;
       }
     },
     computed: {
       remaining: function() {
-        // var items = this.todos.filter(function(todo) {
-        //   return !todo.isDone;
-        // });
-        // return items.length;
         return this.todos.filter(function(todo) {
           return !todo.isDone;
         });
